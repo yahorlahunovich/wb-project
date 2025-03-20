@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("input/processed_train.csv")
+    df = pd.read_csv("input/processed_data.csv")
     df.drop(columns=["cellid", "order_within_phase", "order"], inplace=True)
 
     phase_dict = {
