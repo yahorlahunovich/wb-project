@@ -5,12 +5,14 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedKFold
 import model
 import warnings
+
 warnings.filterwarnings("ignore")
 
 
 if __name__ == "__main__":
     df = pd.read_csv("input/processed_data.csv")
     df.drop(columns=["cellid", "order_within_phase", "order"], inplace=True)
+    print(df.columns)
 
     phase_dict = {
         "G1": 0,
