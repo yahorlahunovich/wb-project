@@ -8,12 +8,9 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-
 if __name__ == "__main__":
     df = pd.read_csv("input/processed_data.csv")
     df.drop(columns=["cellid", "order_within_phase", "order"], inplace=True)
-    print(df.columns)
-
     phase_dict = {
         "G1": 0,
         "S": 1,
@@ -24,11 +21,11 @@ if __name__ == "__main__":
     X = df.drop(columns=["phase"])
     y = df["phase"]
 
-    kfold = StratifiedKFold(n_splits=5)
+    kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     accuracies = []
 
     for fold, (train_index, test_index) in enumerate(kfold.split(X, y)):
-        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        X_train, X_test = X.iloc[train_index].copy(), X.iloc[test_index].copy()
         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
         scaler = StandardScaler()
@@ -38,8 +35,11 @@ if __name__ == "__main__":
         clf = model.get_model()
         clf.fit(X_train, y_train)
         preds = clf.predict(X_test)
+
+        print(pd.Series(preds).value_counts(normalize=True))
+
         accuracy = accuracy_score(y_test, preds)
         accuracies.append(accuracy)
-        print(f"Fold {fold + 1} accuracy: {accuracy}")
+        print(f"Fold {fold + 1} accuracy: {accuracy:.4f}")
 
-    print(f"Mean accuracy: {np.mean(accuracies)}")
+    print(f"Mean accuracy: {np.mean(accuracies):.4f}")
