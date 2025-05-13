@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedKFold
-import model
+import model_classificatiom
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     X = scaler.fit_transform(X)
     test = scaler.transform(test)
 
-    clf = model.get_model()
+    clf = model_classificatiom.get_model()
     print("Model is training")
     clf.fit(X, y)
     print("Model trained")
